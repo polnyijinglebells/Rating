@@ -1,0 +1,29 @@
+# Local Python environment
+.venv/
+venv/
+
+# Python caches and test artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Generated application builds
+build/
+dist/
+installer_output/
+runtime_tcl/
+
+# Local databases and temporary files
+*.sqlite
+*.sqlite3
+*.db
+*.log
+*.tmp
+
+# Editor and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
