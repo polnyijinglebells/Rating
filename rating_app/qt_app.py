@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import ctypes
 import os
 import sqlite3
 import sys
@@ -8,7 +9,7 @@ from datetime import date, datetime
 from pathlib import Path
 
 from PySide6.QtCore import QEvent, Qt, Signal
-from PySide6.QtGui import QAction, QColor, QFont, QKeySequence, QPainter, QShortcut
+from PySide6.QtGui import QAction, QColor, QFont, QIcon, QKeySequence, QPainter, QShortcut
 from PySide6.QtPrintSupport import QPrinter
 from PySide6.QtCharts import QBarCategoryAxis, QBarSeries, QBarSet, QChart, QChartView, QPieSeries, QValueAxis
 from PySide6.QtWidgets import (
@@ -1210,7 +1211,12 @@ QHeaderView::section { background:#e9edf4; padding:8px; border:none; border-righ
 
 
 def run():
-    app=QApplication(sys.argv); app.setApplicationName(APP_NAME); app.setStyle("Fusion"); app.setStyleSheet(STYLE)
+    if sys.platform == "win32":
+        try:
+            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("DigitalRating.Application")
+        except (AttributeError, OSError):
+            pass
+    app=QApplication(sys.argv); app.setApplicationName(APP_NAME); app.setApplicationDisplayName(APP_NAME); app.setWindowIcon(QIcon(str(bundled_resource("icon DR.png")))); app.setStyle("Fusion"); app.setStyleSheet(STYLE)
     db=Database(data_directory()/"digital_rating.sqlite3")
     try:
         first=db.initialize()

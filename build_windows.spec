@@ -4,7 +4,7 @@ a = Analysis(
     ["main.py"],
     pathex=[],
     binaries=[],
-    datas=[("resources/rules.docx", "resources")],
+    datas=[("resources/rules.docx", "resources"), ("icon DR.png", "resources")],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -30,5 +30,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=None,
+    icon="resources/digital_rating.ico",
 )

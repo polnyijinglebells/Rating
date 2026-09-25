@@ -9,9 +9,22 @@ if (-not (Test-Path $ProjectPython)) { $ProjectPython = "python" }
 & $ProjectPython -m PyInstaller --clean build_windows.spec
 
 $Compiler = Get-Command ISCC.exe -ErrorAction SilentlyContinue
+if (-not $Compiler) {
+    $KnownCompiler = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+    if (Test-Path $KnownCompiler) { $Compiler = Get-Item $KnownCompiler }
+}
+if (-not $Compiler) {
+    $KnownCompiler = "$env:ProgramFiles\Inno Setup 6\ISCC.exe"
+    if (Test-Path $KnownCompiler) { $Compiler = Get-Item $KnownCompiler }
+}
+if (-not $Compiler) {
+    $KnownCompiler = "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe"
+    if (Test-Path $KnownCompiler) { $Compiler = Get-Item $KnownCompiler }
+}
 if ($Compiler) {
-    & $Compiler.Source installer.iss
-    Write-Host "Установщик создан в installer_output"
+    $CompilerPath = if ($Compiler.Source) { $Compiler.Source } else { $Compiler.FullName }
+    & $CompilerPath installer.iss
+    Write-Host "Installer created in installer_output"
 } else {
-    Write-Host "EXE создан в dist. Для установщика установите Inno Setup 6 и повторите сборку."
+    Write-Host "EXE created in dist. Install Inno Setup 6 and run the build again to create the installer."
 }
